@@ -136,6 +136,7 @@ module Resque
               end
 
               job = rufus_scheduler.send(interval_type, *args) do
+                log! "interval type #{interval_type} ars(#{args})"
                 if master?
                   log! "queueing #{config['class']} (#{name})"
                   Resque.last_enqueued_at(name, Time.now.to_s)
