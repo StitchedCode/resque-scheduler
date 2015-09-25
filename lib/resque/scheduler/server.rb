@@ -161,7 +161,7 @@ module Resque
           if config['every']
             schedule_interval_every(config['every'])
           elsif config['interval']
-            schedule_interval_every(config['interval'])
+            schedule_interval_interval(config['interval'])
           elsif config['cron']
             'cron: ' + config['cron'].to_s
           else
@@ -169,8 +169,24 @@ module Resque
           end
         end
 
+        def schedule_interval_interval(every)
+          every = [*every]
+
+          s = 'interval: ' << every.first
+
+          return s unless every.length > 1
+
+          s << ' ('
+          meta = every.last.map do |key, value|
+            "#{key.to_s.gsub(/_/, ' ')} #{value}"
+          end
+          s << meta.join(', ') << ')'
+        end
+
+
         def schedule_interval_every(every)
           every = [*every]
+
           s = 'every: ' << every.first
 
           return s unless every.length > 1
