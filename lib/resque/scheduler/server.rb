@@ -160,6 +160,8 @@ module Resque
         def schedule_interval(config)
           if config['every']
             schedule_interval_every(config['every'])
+          elsif config['interval']
+            schedule_interval_every(config['interval'])
           elsif config['cron']
             'cron: ' + config['cron'].to_s
           else
